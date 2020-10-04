@@ -17,8 +17,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      # - name: Test
-      #   run: npm test
+      - name: Test
+        run: npm test
       - name: Publish
         if: github.ref == 'refs/heads/main'
         uses: mikeal/merge-release@master
