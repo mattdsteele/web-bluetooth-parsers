@@ -1,5 +1,6 @@
 {
   "name": "web-bluetooth-parsers",
+  "version": "0.0.0-dev",
   "description": "A collection of parsers and utilities for use in Web Bluetooth projects",
   "scripts": {
     "build": "pika-pack",
