@@ -1,6 +1,6 @@
 import { CharacteristicParser } from '../index';
 
-export const UUIDS = {
+export const CSC_UUIDS = {
   service: 'cycling_speed_and_cadence',
   characteristic: {
     cscMeasurement: 'csc_measurement',

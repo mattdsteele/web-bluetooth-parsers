@@ -1,6 +1,6 @@
 import { CharacteristicParser } from '../utils';
 
-const UUIDS = {
+const FTMS_UUIDS = {
   service: 'fitness_machine',
   characteristic: {
     indoorBikeData: 'indoor_bike_data',
@@ -155,4 +155,4 @@ class FitnessMachineFeatureParser
   }
 }
 
-export { IndoorBikeDataParser, FitnessMachineFeatureParser, UUIDS };
+export { IndoorBikeDataParser, FitnessMachineFeatureParser, FTMS_UUIDS };
