@@ -5,6 +5,7 @@ interface CharacteristicParser<T> {
 export { CharacteristicParser };
 
 export function fromHex(hex: string) {
+  hex = hex.replace(/ /g, '');
   if (typeof hex !== 'string') {
     throw new TypeError('Expected input to be a string');
   }

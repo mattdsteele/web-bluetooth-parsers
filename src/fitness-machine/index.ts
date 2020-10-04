@@ -1,5 +1,12 @@
 import { CharacteristicParser } from '../utils';
 
+const UUIDS = {
+  service: 'fitness_machine',
+  characteristic: {
+    indoorBikeData: 'indoor_bike_data',
+    fitnessMachineFeature: 'fitness_machine_feature',
+  },
+};
 interface IndoorBikeDataElements {
   averageCadence: number;
   averagePower: number;
@@ -86,4 +93,66 @@ class IndoorBikeDataParser implements CharacteristicParser<IndoorBikeData> {
   }
 }
 
-export { IndoorBikeDataParser };
+type flagField = { [T: string]: number };
+type flagsSupportedField<T> = { [P in keyof T]?: boolean };
+const fitnessMachineFeaturesFields = {
+  averageSpeedSupported: 0,
+  cadenceSupported: 1,
+  totalDistanceSupported: 2,
+  inclinationSupported: 3,
+  elevationGainSupported: 4,
+  paceSupported: 5,
+  stepCountSupported: 6,
+  resistanceLevelSupported: 7,
+  strideCountSupported: 8,
+  expendedEnergySupported: 9,
+  heartRateMeasurementSupported: 10,
+  metabolicEquivalentSupported: 11,
+  elapsedTimeSupported: 12,
+  remainingTimeSupported: 13,
+  powerMeasurementSupported: 14,
+  forceonBeltandPowerOutputSupported: 15,
+  userDataRetentionSupported: 16,
+};
+const targetSettingsFields = {
+  speedTargetSettingSupported: 0,
+  inclinationTargetSettingSupported: 1,
+  resistanceTargetSettingSupported: 2,
+  powerTargetSettingSupported: 3,
+  heartRateTargetSettingSupported: 4,
+  targetedExpendedEnergyConfigurationSupported: 5,
+  targetedStepNumberConfigurationSupported: 6,
+  targetedStrideNumberConfigurationSupported: 7,
+  targetedDistanceConfigurationSupported: 8,
+  targetedTrainingTimeConfigurationSupported: 9,
+  targetedTimeinTwoHeartRateZonesConfigurationSupported: 10,
+  targetedTimeinThreeHeartRateZonesConfigurationSupported: 11,
+  targetedTimeinFiveHeartRateZonesConfigurationSupported: 12,
+  indoorBikeSimulationParametersSupported: 13,
+  wheelCircumferenceConfigurationSupported: 14,
+  spinDownControlSupported: 15,
+  targetedCadenceConfigurationSupported: 16,
+};
+
+type fmfSupports = flagsSupportedField<typeof fitnessMachineFeaturesFields>;
+type targetSettingsSupports = flagsSupportedField<typeof targetSettingsFields>;
+
+type FitnessMachineFeatureFeature = fmfSupports & targetSettingsSupports;
+class FitnessMachineFeatureParser
+  implements CharacteristicParser<FitnessMachineFeatureFeature> {
+  parse(dataView: DataView): FitnessMachineFeatureFeature {
+    const featureFlags = dataView.getUint32(0, true);
+    const targetSettings = dataView.getUint32(4, true);
+
+    const supportedOptions: FitnessMachineFeatureFeature = {};
+    Object.entries(fitnessMachineFeaturesFields).forEach(([key, flag]) => {
+      (supportedOptions as any)[key] = contains(featureFlags, flag);
+    });
+    Object.entries(targetSettingsFields).forEach(([key, flag]) => {
+      (supportedOptions as any)[key] = contains(targetSettings, flag);
+    });
+    return supportedOptions;
+  }
+}
+
+export { IndoorBikeDataParser, FitnessMachineFeatureParser, UUIDS };
