@@ -20,7 +20,7 @@ jobs:
       # - name: Test
       #   run: npm test
       - name: Publish
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         uses: mikeal/merge-release@master
         env:
           DEPLOY_DIR: pkg
