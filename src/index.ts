@@ -1,1 +1,2 @@
-const foo: string = 'yes';
+export * from './fitness-machine/index';
+export * from './utils';
