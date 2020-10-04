@@ -1,0 +1,28 @@
+on: push
+name: Build and Publish
+jobs:
+  all:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Cache node_modules
+        id: cache-modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('package.json') }}
+      - name: Install
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build
+        run: npm run build
+      # - name: Test
+      #   run: npm test
+      - name: Publish
+        if: github.ref == 'refs/heads/master'
+        uses: mikeal/merge-release
+        env:
+          DEPLOY_DIR: pkg
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
