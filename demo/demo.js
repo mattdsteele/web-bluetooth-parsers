@@ -4,9 +4,13 @@ const { characteristic, service } = FTMS_UUIDS;
 // add bt-device
 let dev = document.createElement('bt-device');
 dev.service = service;
-dev.characteristic = characteristic;
+dev.characteristic = characteristic.indoorBikeData;
+dev.notifications = true;
 dev = document.body.appendChild(dev);
-dev.parse = (dv) => new IndoorBikeDataParser().parse(dv);
+dev.parse = (dv) => {
+  console.log('parsing')
+  return new IndoorBikeDataParser().parse(dv);
+}
 dev.addEventListener('data', (e) => {
   console.log(e.detail.value);
 });
