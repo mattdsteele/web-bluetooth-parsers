@@ -1,4 +1,4 @@
-# Cycling Speed & Cadence Sensordd cy
+# Cycling Speed & Cadence Sensor
 
 Bluetooth Spec https://www.bluetooth.org/docman/handlers/downloaddoc.ashx?doc_id=261450
 
